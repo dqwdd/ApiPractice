@@ -12,6 +12,8 @@ interface NetWorkInterface {
 
 
     @GET("/1470000/FoodNtrIrdntInfoService/getFoodNtrItdntList") //시도별 실시간 측정정보 조회 주소
-    fun getRequestAppointmentList(@Query("ServiceKey", encoded = true) key: String, @Query("type") type: String="json") : Call<Library>
+    fun getRequestAppointmentList(
+        @Query("ServiceKey", encoded = true) key: String,
+        @Query("type") type: String="json") : Call<Library>
 
 }

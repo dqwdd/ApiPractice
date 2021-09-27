@@ -5,7 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.apipractice.json.Body
+import com.example.apipractice.json.Item
 import com.example.apipractice.json.Library
 import com.example.apipractice.web.NetWorkInterface
 import com.example.apipractice.web.ServerAPI
@@ -24,10 +29,20 @@ class MainActivity : AppCompatActivity() {
     lateinit var apiService : NetWorkInterface
 
 
-    lateinit var mContext: Context
 
 
     lateinit var button : Button
+    lateinit var RecyclerView : RecyclerView
+
+
+
+    val mItemList = ArrayList<Item>()
+
+    lateinit var mRecyclerAdapter : RecyclerAdapter
+
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,14 +52,16 @@ class MainActivity : AppCompatActivity() {
         apiService = retrofit.create(NetWorkInterface::class.java)
 
         button = findViewById(R.id.button)
+        RecyclerView = findViewById(R.id.RecyclerView)
+
+        mRecyclerAdapter = RecyclerAdapter(this, mItemList)
+        RecyclerView.adapter = mRecyclerAdapter
+
+        RecyclerView.layoutManager = LinearLayoutManager(this)
 
         button.setOnClickListener {
             aa()
         }
-
-    }
-
-    fun okHttp() {
 
     }
 
@@ -54,6 +71,11 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<Library>, response: Response<Library>) {
                 if (response.isSuccessful) {
                     Log.d("응답 성공",response.body()!!.toString())
+                    val basicResponse = response.body()!!
+                    mItemList.clear()
+                    mItemList.addAll(basicResponse.body.items)
+
+                    mRecyclerAdapter.notifyDataSetChanged()
                 }
                 else {
                     val jsonObj = JSONObject(response.errorBody()!!.string())

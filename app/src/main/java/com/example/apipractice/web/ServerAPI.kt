@@ -35,12 +35,10 @@ class ServerAPI {
                     }
                 }
 
-                val myClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
                 val gson = GsonBuilder().setLenient().create()
 
                 retrofit = Retrofit.Builder()
                     .baseUrl(hostURL)
-                    .client(myClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
             }
