@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.example.apipractice.json.Library
 import com.example.apipractice.web.NetWorkInterface
 import com.example.apipractice.web.ServerAPI
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,7 +18,7 @@ import retrofit2.Retrofit
 class MainActivity : AppCompatActivity() {
 
 
-    val key = "ZttZgKaWHUnvsLX%2FB8UWGVI9d3Uj6PqProTiP2Dnq78CyAgcSK6%2B%2F1r%2FdtmJoWXOTNDBb2G1PxVYeB32Iq6teA%3D%3D\n"
+    val key = "ZttZgKaWHUnvsLX%2FB8UWGVI9d3Uj6PqProTiP2Dnq78CyAgcSK6%2B%2F1r%2FdtmJoWXOTNDBb2G1PxVYeB32Iq6teA%3D%3D"
 
     private lateinit var retrofit: Retrofit
     lateinit var apiService : NetWorkInterface
@@ -43,18 +44,26 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun okHttp() {
+
+    }
+
 
     fun aa() {
         apiService.getRequestAppointmentList(key).enqueue(object : Callback<Library>{
             override fun onResponse(call: Call<Library>, response: Response<Library>) {
                 if (response.isSuccessful) {
-                    Log.d("응답 성공","")
+                    Log.d("응답 성공",response.body()!!.toString())
+                }
+                else {
+                    val jsonObj = JSONObject(response.errorBody()!!.string())
+                    Log.d("응답 실패", jsonObj.toString())
                 }
 
             }
 
             override fun onFailure(call: Call<Library>, t: Throwable) {
-                Log.d("응답 실패", "")
+                Log.d("연결 실패", call.toString())
             }
         })
     }

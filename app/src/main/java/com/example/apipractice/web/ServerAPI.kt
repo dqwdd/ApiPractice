@@ -12,7 +12,7 @@ class ServerAPI {
     companion object {
 
 //        서버 주소
-        val hostURL = "http://apis.data.go.kr/1470000/FoodNtrIrdntInfoService/"
+        val hostURL = "http://apis.data.go.kr"
 
 //        Retrofit 형태의 변수가 ==> OkhttpClient처럼 실제 호출 담당
 //        레트로핏 객체는 -> 하나만 만들어두고 -> 여러 화면에서 공유해서 사용
@@ -35,8 +35,12 @@ class ServerAPI {
                     }
                 }
 
+                val myClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
+                val gson = GsonBuilder().setLenient().create()
+
                 retrofit = Retrofit.Builder()
                     .baseUrl(hostURL)
+                    .client(myClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
             }
