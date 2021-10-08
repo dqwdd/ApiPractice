@@ -29,17 +29,13 @@ class MainActivity : AppCompatActivity() {
     lateinit var apiService : NetWorkInterface
 
 
-
-
     lateinit var button : Button
     lateinit var RecyclerView : RecyclerView
-
 
 
     val mItemList = ArrayList<Item>()
 
     lateinit var mRecyclerAdapter : RecyclerAdapter
-
 
 
 
@@ -67,9 +63,11 @@ class MainActivity : AppCompatActivity() {
 
 
     fun aa() {
+
         apiService.getRequestAppointmentList(key).enqueue(object : Callback<Library>{
             override fun onResponse(call: Call<Library>, response: Response<Library>) {
                 if (response.isSuccessful) {
+
                     Log.d("응답 성공",response.body()!!.toString())
                     val basicResponse = response.body()!!
                     mItemList.clear()
@@ -79,6 +77,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 else {
                     val jsonObj = JSONObject(response.errorBody()!!.string())
+
+                    Log.d("응답 실패", jsonObj.toString())
                     Log.d("응답 실패", jsonObj.toString())
                 }
 
