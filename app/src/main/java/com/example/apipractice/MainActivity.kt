@@ -7,8 +7,10 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.apipractice.databinding.ActivityMainBinding
 import com.example.apipractice.json.Body
 import com.example.apipractice.json.Item
 import com.example.apipractice.json.Library
@@ -19,6 +21,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,24 +41,22 @@ class MainActivity : AppCompatActivity() {
     lateinit var mRecyclerAdapter : RecyclerAdapter
 
 
+    lateinit var binding : ActivityMainBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         retrofit = ServerAPI.getRetrofit(this)
         apiService = retrofit.create(NetWorkInterface::class.java)
 
-        button = findViewById(R.id.button)
-        RecyclerView = findViewById(R.id.RecyclerView)
-
         mRecyclerAdapter = RecyclerAdapter(this, mItemList)
-        RecyclerView.adapter = mRecyclerAdapter
+        binding.RecyclerView.adapter = mRecyclerAdapter
 
-        RecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.RecyclerView.layoutManager = LinearLayoutManager(this)
 
-        button.setOnClickListener {
+        binding.button.setOnClickListener {
             aa()
         }
 
@@ -78,7 +79,6 @@ class MainActivity : AppCompatActivity() {
                 else {
                     val jsonObj = JSONObject(response.errorBody()!!.string())
 
-                    Log.d("응답 실패", jsonObj.toString())
                     Log.d("응답 실패", jsonObj.toString())
                 }
 
